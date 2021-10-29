@@ -87,7 +87,7 @@ unsigned char PCF8574::readByte(void)
   unsigned char data =  wire->read();
 
 #ifdef DEBUG_PCF8574
-  Serial.print("PCF8574 - WriteBit 0x");  Serial.println(rmWriteMask, HEX);
+  Serial.print("PCF8574 - ReadByte 0x");  Serial.println(data, HEX);
 #endif
 
   return data;
@@ -104,5 +104,10 @@ bool PCF8574::readBit(int pPinNum)
   wire->requestFrom(rmAddress, 1);
 
   bool data =  ((wire->read()) >> pNum) & 1;
+
+#ifdef DEBUG_PCF8574
+  Serial.print("PCF8574 - ReadBit 0x");  Serial.println(data, HEX);
+#endif
+
   return data;
 }
