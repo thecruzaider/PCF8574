@@ -17,7 +17,7 @@ class PCF8574
   void writeByte(unsigned char pData);
   void writeBit(int pPinNum, bool pState);
 
-  unsigned char readByte(unsigned char pData);
+  unsigned char readByte(void);
   bool readBit(int pPinNum);
 
   private:
