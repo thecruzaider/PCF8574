@@ -21,8 +21,10 @@ PCF8574::PCF8574(TwoWire &w)
  *  @param  pAddress Address of the device 
  *  @param  pRegInitMask First IO state you want to set
  */
-void  PCF8574::begin(unsigned char pAddress, unsigned char pRegInitMask)
+int  PCF8574::begin(unsigned char pAddress, unsigned char pRegInitMask)
 {
+  int rError = 0;
+
 #ifdef DEBUG_PCF8574
   Serial.println("Initialization of IO extender PCF8574");
   Serial.print("  address   0x");  Serial.println(pAddress, HEX);
@@ -34,32 +36,40 @@ void  PCF8574::begin(unsigned char pAddress, unsigned char pRegInitMask)
   rmAddress = pAddress;
   rmWriteMask = pRegInitMask;
 
-  PCF8574::writeByte(rmWriteMask);
+  rError = PCF8574::writeByte(rmWriteMask);
+
+  return(rError);
 }
 
 /*! ---------------------------------------------------------------------------------------------
  *  @brief  Write single byte to PCF8574
  *  @param  pData Data byte to write IO state
  */
-void PCF8574::writeByte(unsigned char pData)
+int PCF8574::writeByte(unsigned char pData)
 {
+  int rError = 0;
+
 #ifdef DEBUG_PCF8574
   Serial.print("PCF8574 - WriteByte 0x");  Serial.println(pData, HEX);
 #endif
 
   wire->beginTransmission(rmAddress);
   wire->write(pData);
-  wire->endTransmission();
+  rError = wire->endTransmission();
 
   rmWriteMask = pData;
+
+  return(rError);
 }
 
 /*! ---------------------------------------------------------------------------------------------
  *  @brief  Write single bit to PCF8574
  *  @param  pData Data bit to write to an IO
  */
-void PCF8574::writeBit(int pPinNum, bool pState)
+int PCF8574::writeBit(int pPinNum, bool pState)
 {
+  int rError = 0;
+
   if (pState)
     rmWriteMask |= 1 << pPinNum;
   else
@@ -71,7 +81,9 @@ void PCF8574::writeBit(int pPinNum, bool pState)
 
   wire->beginTransmission(rmAddress);
   wire->write(rmWriteMask);
-  wire->endTransmission();
+  rError = wire->endTransmission();
+
+  return(rError);
 }
 
 /*! ---------------------------------------------------------------------------------------------

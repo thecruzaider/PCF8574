@@ -12,10 +12,10 @@ class PCF8574
 
   PCF8574(TwoWire &w);
 
-  void begin(unsigned char pAddress, unsigned char pRegInitMask);
+  int begin(unsigned char pAddress, unsigned char pRegInitMask);
 
-  void writeByte(unsigned char pData);
-  void writeBit(int pPinNum, bool pState);
+  int writeByte(unsigned char pData);
+  int writeBit(int pPinNum, bool pState);
 
   unsigned char readByte(void);
   bool readBit(int pPinNum);
